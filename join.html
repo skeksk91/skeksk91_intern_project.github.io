@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Join</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="signin.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+
+  <body>
+
+    <div class="container">
+
+      <div name="userJoin" class="form-signin">
+        <h2 class="form-signin-heading">Welcome to join</h2>
+        <input name='userid' type="text" id="inputID" class="form-control" placeholder="Your ID" required autofocus>
+        <label for="inputPassword" class="sr-only">Password</label>
+        <input name='pwd' type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+        <button id='submit' class="btn btn-lg btn-primary btn-block">Submit</button>
+      </div>
+    </div> <!-- /container -->
+
+    <script src="cookie.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script type="text/javascript">
+
+      //var serverIP = 'http://localhost:8080';
+      var socket = io.connect(serverIP); // 소켓 연결
+
+      socket.on('joinResult', function(ret){
+        if(ret == 1){
+          alert("회원가입을 환영합니다.");
+          location.href=serverIP+'/index.html';
+        }
+        else{ 
+          alert("이미 아이디가 존재합니다.");
+        }
+      });
+
+      $(document).ready(function(){
+
+      //submit : 회원가입 요청 버튼 클릭
+      $("#submit").click(function(){
+        var userid = $('#inputID').val();
+        var pwd = $('#inputPassword').val();
+        if(userid == ''){
+          alert("아이디를 입력해주세요.");
+          return;
+        }
+        if(pwd == ''){
+          alert("비밀번호를 입력해주세요.");
+          return;
+        }
+        socket.emit('addUser', userid, pwd);
+      });
+
+    });
+
+  </script>
+  </body>
+</html>
