@@ -1,6 +1,13 @@
 #include <stdio.h>
 #include <string.h>
 
+#define sq(x) x*x
+int main() {
+	int z = 4;
+	printf("%d %d\n", sq(z), sq(z + 1));
+	return 0;
+}
+
 int main() {
 	int a, b, c, d, e, result;
 	a = 2; b = 3; c = 4; d = 5; e = 6;
@@ -81,4 +88,51 @@ int main() {
 	int y = 2017, i, s = 0;
 	for (i = y; i; i = (i - 1)&y) s += i;
 	printf("%d\n", s);
+}
+//------------------------------
+const int N = 100;
+int edges[N][N], cnt[N];
+int stack[N], out[N];
+bool seen[N];
+void addEdge(int x, int y)
+{
+	edges[x][++cnt[x]] = y;
+	edges[y][++cnt[y]] = x;
+}
+int main()
+{
+	addEdge(1, 2); addEdge(1, 3);
+	addEdge(2, 1); addEdge(2, 4);
+	addEdge(3, 1);
+	addEdge(4, 2);
+
+	int i, sum = 0;
+	for (i = 1; i <= 4; i++)
+		sum += cnt[i];
+	printf("sum = %d\n", sum);
+	int top, n = 0;
+	stack[top = 1] = 2;
+	while (top)
+	{
+		int node = stack[top--];
+		out[++n] = node;
+		for (i = 1; i <= cnt[node]; i++)
+		{
+			int next = edges[node][i];
+			if (!seen[next])
+				seen[stack[++top] = next] = true;
+		}
+	}
+	for (i = 1; i <= n; i++)
+		printf("%d ", out[i]);
+	return 0;
+}
+
+int main() {
+	int n = 2015, c = 0;
+	while (n > 0) {
+		c += (n & 3);
+		n = n & (n - 1);
+	}
+	printf("%d\n", c);
 }
