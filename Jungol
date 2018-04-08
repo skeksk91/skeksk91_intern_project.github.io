@@ -1,0 +1,84 @@
+#include <stdio.h>
+#include <string.h>
+
+int main() {
+	int a, b, c, d, e, result;
+	a = 2; b = 3; c = 4; d = 5; e = 6;
+	result = a ^ b + c * c % d + d & e;
+	printf("%d\n", result);
+}
+//-------------------------------------------------
+int main() {
+	const int l = 7;
+	const int n = 10;
+	char S[l + 1] = "KOI2017";
+	int p[n] = { 0,5,2,6,7,2,3,1,2,3 };
+	int c[l + 1] = { 0, };
+	int i, j;
+	for (i = 0; i<n; i++) c[p[i]]++;
+	for (i = 0; i <= l; i++) {
+		for (j = 0; j<c[i]; j++)
+			putchar('-');
+		if (i < l) putchar(S[i]);
+	}
+	printf("\n");
+}
+//-------------------------------------------------
+void swap(int x, int y) {
+	int tmp;
+	tmp = x; x = y; y = tmp;
+}
+int main() {
+	int a = 3, b = 5, *c = &b, d = 4;
+	swap(a, *c);
+	c = &d;
+	swap(a, *c);
+	swap(a, b);
+	printf("%d %d %d %d\n", a, b,
+		*c, d);
+	return 0;
+}
+//-------------------------------------------------
+
+int main() {
+	const int n = 10;
+	const int m = 5;
+	int p[n] = { -1,0,0,1,1,2,2,2,4,4 };
+
+	int d[n] = { 0, };
+	int x[m] = { 0,6,8,3,8 };
+	int y[m] = { 5,7,9,8,5 };
+	int i, res = 0;
+	for (i = 1; i<n; i++) d[i] = d[p[i]] +
+		1;
+	for (i = 0; i<m; i++) {
+		int a = x[i], b = y[i];
+		while (a != b) {
+			if (d[a] > d[b]) a = p[a];
+			else b = p[b];
+		}
+		res += a;
+	}
+	printf("%d\n", res);
+}
+
+int main() {
+	const int n = 5;
+	int a[n] = { 0,1,3,0,2 };
+	int b[n] = { 1,3,4,2,3 };
+	int k = 2017, i;
+	char s[n + 1] = "01234";
+	for (i = 0; i<k; i++) {
+		int x = i % n;
+		char t = s[a[x]];
+		s[a[x]] = s[b[x]];
+		s[b[x]] = t;
+	}
+	puts(s);
+}
+
+int main() {
+	int y = 2017, i, s = 0;
+	for (i = y; i; i = (i - 1)&y) s += i;
+	printf("%d\n", s);
+}
