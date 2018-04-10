@@ -1,138 +1,167 @@
 #include <stdio.h>
 #include <string.h>
 
-#define sq(x) x*x
 int main() {
-	int z = 4;
-	printf("%d %d\n", sq(z), sq(z + 1));
-	return 0;
+	int check[101] = { 0, }, m = 100;
+	int n = 3;
+	int a[100] = { 8,9,10 };
+	int i, j, p = 0;
+	for (i = 0; i < n; i++) {
+		check[a[i]]++;
+	}
+	for (i = 1; i <= m; i++) {
+		int cnt = 0;
+		for (j = i; j <= m; j += i) {
+			cnt += check[j];
+		}
+		if (cnt >= 2) p++;
+	}
+	printf("%d", p);
+}
+//--------------------------------------------------------
+int main() {
+	int i, j, a[5], b[5], s;
+	a[0] = 3; b[0] = 0;
+	s = 0;
+	for (i = 1; i < 5; i++) {
+		a[i] = a[i-1] * i;
+		b[i] = b[i-1] + a[i];
+	}
+	for (i = 0; i < 5; i++) {
+		for (j = 0; j < 5; j++) {
+			s += a[i] * b[j];
+		}
+	}
+	printf("%d\n", s);
+}
+//--------------------------------------------------------
+int main() {
+	int i, j, x, n;
+	n = 20;
+	x = 1;
+	for (i = 2; i <= n; i++) {
+		for (j = 2; j * j <= i; j++) {
+			if (i % j == 0)
+				break;
+		}
+		if (j * j > i) x = i;
+	}
+	printf("%d\n", x);
+}
+//--------------------------------------------------------
+int f(int x, int y) {
+	if (x <= 1 || y <= 1) return 1;
+	return f(x ‐ 1, y ‐ 2) + f(x ‐ 2, y ‐ 1);
+}
+int g(int x, int y) {
+	if (x <= 1 || y <= 1) return 1;
+	return g(x, y ‐ 1) + g(x ‐ 1, y) + f(x ‐ 1, y ‐ 1);
 }
 
 int main() {
-	int a, b, c, d, e, result;
-	a = 2; b = 3; c = 4; d = 5; e = 6;
-	result = a ^ b + c * c % d + d & e;
-	printf("%d\n", result);
+	printf("%d", g(3, 4));
 }
-//-------------------------------------------------
+//--------------------------------------------------------
+
 int main() {
-	const int l = 7;
-	const int n = 10;
-	char S[l + 1] = "KOI2017";
-	int p[n] = { 0,5,2,6,7,2,3,1,2,3 };
-	int c[l + 1] = { 0, };
-	int i, j;
-	for (i = 0; i<n; i++) c[p[i]]++;
-	for (i = 0; i <= l; i++) {
-		for (j = 0; j<c[i]; j++)
-			putchar('-');
-		if (i < l) putchar(S[i]);
+	const int N = 500;
+	int a[N + 1] = { 0, }, i, j;
+	for (i = 1; i <= N; i++)
+	{
+		a[i] += i;
+		for (j = i * 2; j <= N; j += i)
+			a[j] += a[i];
 	}
-	printf("\n");
+	printf("%d\n", a[201]);
 }
-//-------------------------------------------------
+
+//----------------------------------------------------
+
+int f(int a) {
+	int b = 0;
+	while (a != 0) {
+		b = b * 10 + a % 10;
+		a /= 10;
+	}
+	return b;
+}
+int main() {
+	int i, sum = 0;
+	for (i = 1; i <= 77; i++) {
+		sum += f(i);
+	}
+	printf("%d", sum % 1000);
+	return 0;
+}
+
+//-------------------------------------------
+
+int main() {
+	const int n = 12;
+	int b[n] =
+	{ 0,2,4,7,9,11,13,15,18,19,22,24 };
+	int p, r = 0;
+	for (p = 0; p<(1 << n); p++) {
+		int x = 0;
+		for (int i = 0; i<n; i++) {
+			if (p & (1 << i)) x ^= b[i];
+		}
+		if (x <= 10) r++;
+	}
+	printf("%d\n", r % 1000);
+}
+
+//-------------------------------------------
+
+int main() {
+	int a[15] = { 1, 2, 4, 6, 8, 0, 9, 10,
+		13, 14, 15, 16, 17, 18, 19 };
+	int i, s = 12;
+	for (i = 1; i <= 15; i++) {
+		s ^= a[i - 1] ^ i;
+	}
+	printf("%d\n", s);
+}
+//-------------------------------------------
+
+int f(int a, int b, int c) {
+	if (!b) return 0;
+	if (b & 1) return (f(a << 1, b >>
+		1, c) + a) % c;
+	return f(a << 1, b >> 1, c);
+}
+
+int main() {
+	printf("%d", f(12, 45, 1234));
+}
+
+//-----------------------------------------
+
+int cnt = 0;
+int f(int x, int y) {
+	if (x == 1 && y == 1) cnt++;
+	if (x == 0 || y == 0) return 1;
+	return f(x - 1, y) + f(x - 1, y -
+		1) * 2 + f(x, y - 1) * 3;
+}
+
+int main() {
+	f(5, 6);
+	printf("%d", cnt);
+}
+
+//-----------------------------------------
+
+//값에 의한 호출!! 함수 밖에 영향 안줌
 void swap(int x, int y) {
 	int tmp;
 	tmp = x; x = y; y = tmp;
 }
 int main() {
-	int a = 3, b = 5, *c = &b, d = 4;
-	swap(a, *c);
-	c = &d;
-	swap(a, *c);
+	int a = 1, b = 2, c = 3, d = 4;
+	swap(a, c);
 	swap(a, b);
-	printf("%d %d %d %d\n", a, b,
-		*c, d);
+	printf("%d %d %d %d\n", a, b, c,
+		d);
 	return 0;
-}
-//-------------------------------------------------
-
-int main() {
-	const int n = 10;
-	const int m = 5;
-	int p[n] = { -1,0,0,1,1,2,2,2,4,4 };
-
-	int d[n] = { 0, };
-	int x[m] = { 0,6,8,3,8 };
-	int y[m] = { 5,7,9,8,5 };
-	int i, res = 0;
-	for (i = 1; i<n; i++) d[i] = d[p[i]] +
-		1;
-	for (i = 0; i<m; i++) {
-		int a = x[i], b = y[i];
-		while (a != b) {
-			if (d[a] > d[b]) a = p[a];
-			else b = p[b];
-		}
-		res += a;
-	}
-	printf("%d\n", res);
-}
-
-int main() {
-	const int n = 5;
-	int a[n] = { 0,1,3,0,2 };
-	int b[n] = { 1,3,4,2,3 };
-	int k = 2017, i;
-	char s[n + 1] = "01234";
-	for (i = 0; i<k; i++) {
-		int x = i % n;
-		char t = s[a[x]];
-		s[a[x]] = s[b[x]];
-		s[b[x]] = t;
-	}
-	puts(s);
-}
-
-int main() {
-	int y = 2017, i, s = 0;
-	for (i = y; i; i = (i - 1)&y) s += i;
-	printf("%d\n", s);
-}
-//------------------------------
-const int N = 100;
-int edges[N][N], cnt[N];
-int stack[N], out[N];
-bool seen[N];
-void addEdge(int x, int y)
-{
-	edges[x][++cnt[x]] = y;
-	edges[y][++cnt[y]] = x;
-}
-int main()
-{
-	addEdge(1, 2); addEdge(1, 3);
-	addEdge(2, 1); addEdge(2, 4);
-	addEdge(3, 1);
-	addEdge(4, 2);
-
-	int i, sum = 0;
-	for (i = 1; i <= 4; i++)
-		sum += cnt[i];
-	printf("sum = %d\n", sum);
-	int top, n = 0;
-	stack[top = 1] = 2;
-	while (top)
-	{
-		int node = stack[top--];
-		out[++n] = node;
-		for (i = 1; i <= cnt[node]; i++)
-		{
-			int next = edges[node][i];
-			if (!seen[next])
-				seen[stack[++top] = next] = true;
-		}
-	}
-	for (i = 1; i <= n; i++)
-		printf("%d ", out[i]);
-	return 0;
-}
-
-int main() {
-	int n = 2015, c = 0;
-	while (n > 0) {
-		c += (n & 3);
-		n = n & (n - 1);
-	}
-	printf("%d\n", c);
 }
